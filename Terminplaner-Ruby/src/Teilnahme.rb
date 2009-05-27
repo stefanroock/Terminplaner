@@ -2,14 +2,14 @@ class Teilnahme
 
 	include Comparable
 
-  	@@OFFEN = 1
-	@@BESTAETIGT = 2
-	@@ABGELEHNT = 3	
+  	OFFEN = 1
+	BESTAETIGT = 2
+	ABGELEHNT = 3	
 
 	attr_reader :teilnehmer, :status
 
 	def Teilnahme::new_default(teilnehmer)
-		Teilnahme.new(@@OFFEN, teilnehmer)
+		Teilnahme.new(OFFEN, teilnehmer)
 	end
 
 	def initialize(status, teilnehmer)
@@ -31,28 +31,15 @@ class Teilnahme
 	end
 
 	def bestaetige
-		@status = @@BESTAETIGT
+		@status = BESTAETIGT
 	end
 
 	def lehne_ab
-		@status = @@ABGELEHNT
+		@status = ABGELEHNT
 	end
 
 	def ist_abgelehnt
-		@status == @@ABGELEHNT
-	end
-
-	def Teilnahme::BESTAETIGT
-		@@BESTAETIGT
-	end
-
-
-	def Teilnahme::OFFEN
-		@@OFFEN
-	end
-
-	def Teilnahme::ABGELEHNT
-		@@ABGELEHNT
+		@status == ABGELEHNT
 	end
 
 end

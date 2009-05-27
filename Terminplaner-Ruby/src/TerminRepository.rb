@@ -19,7 +19,7 @@ class TerminRepository
 		@termine.each { |termin|
 			termin.fuege_zu_terminliste_hinzu(result, besitzer, zeige_auch_abgelehnte)  # TDA: Tell, don't ask
 		}
-		result
+		result.sort
 	end
 		
 end

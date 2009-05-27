@@ -12,13 +12,13 @@ class Termin
 		@dauer_in_minuten = dauer_in_minuten
 		@bezeichnung = bezeichnung
 		@teilnahmen = Set.new
-		@teilnahmen.add( Teilnahme.new(Teilnahme.BESTAETIGT, autor) )
+		@teilnahmen.add( Teilnahme.new(Teilnahme::BESTAETIGT, autor) )
 	end
 
 	def <=> (obj)
-		int start_zeit_compare = @start_zeit <=> obj.start_zeit
+		start_zeit_compare = @start_zeit <=> obj.start_zeit
 
-		if start_zeit_compare == 0 then to_s <=> obj.toString() else start_zeit_compare end
+		if start_zeit_compare == 0 then to_s <=> obj.to_s else start_zeit_compare end
 
 		start_zeit_compare
 	end

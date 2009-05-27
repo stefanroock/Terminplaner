@@ -9,17 +9,17 @@ require "BenutzerNichtEingeladenException"
 
 class TerminkalenderTest < RUNIT::TestCase
 
-	@@STEFAN = "Stefan"
-	@@HENNING = "Henning"
-	@@MARTIN = "Martin"
+	STEFAN = "Stefan"
+	HENNING = "Henning"
+	MARTIN = "Martin"
 
 	def setup
 		@terminRepository = TerminRepository.new
 		@jetzt = Time.new
 		@spaeter = @jetzt + 10000
-		@stefans_kalender = Terminkalender.new(@terminRepository, @@STEFAN)
-		@hennings_kalender = Terminkalender.new(@terminRepository, @@HENNING)
-		@martins_kalender = Terminkalender.new(@terminRepository, @@MARTIN)
+		@stefans_kalender = Terminkalender.new(@terminRepository, STEFAN)
+		@hennings_kalender = Terminkalender.new(@terminRepository, HENNING)
+		@martins_kalender = Terminkalender.new(@terminRepository, MARTIN)
 	end
 	
 	def test_termin_anlegen
@@ -29,7 +29,7 @@ class TerminkalenderTest < RUNIT::TestCase
 		assert_equal("TDD-Dojo", termin.bezeichnung)
 		assert_equal(@jetzt, termin.start_zeit)
 		assert_equal(dauer_in_minuten, termin.dauer_in_minuten)
-		assert_equal(@@STEFAN, termin.autor)
+		assert_equal(STEFAN, termin.autor)
 	end
 
 	def test_terminliste_sortiert_nach_startzeit
@@ -50,39 +50,39 @@ class TerminkalenderTest < RUNIT::TestCase
 
 	def test_teilnehmer_einladen_und_autor_ist_auch_teilnehmer
 		termin = @stefans_kalender.new_termin(@jetzt, 180, "TDD-Dojo")
-		termin.lade_teilnehmer_ein(@@MARTIN)
-		termin.lade_teilnehmer_ein(@@HENNING)
+		termin.lade_teilnehmer_ein(MARTIN)
+		termin.lade_teilnehmer_ein(HENNING)
 
-		assert_equal([@@HENNING, @@MARTIN, @@STEFAN], termin.teilnehmer)
+		assert_equal([HENNING, MARTIN, STEFAN], termin.teilnehmer)
 		assert_equal(@stefans_kalender.alle_termine, [termin])
 		assert_equal(@hennings_kalender.alle_termine, [termin])
 	end
 
 	def test_teilnehmer_koennen_termine_zu_und_absagen
 		termin = @stefans_kalender.new_termin(@jetzt, 180, "TDD-Dojo")
-		termin.lade_teilnehmer_ein(@@MARTIN)
-		termin.lade_teilnehmer_ein(@@HENNING)
+		termin.lade_teilnehmer_ein(MARTIN)
+		termin.lade_teilnehmer_ein(HENNING)
 
-		assert_equal(Teilnahme.OFFEN, termin.teilnahme_status(@@MARTIN))
+		assert_equal(Teilnahme::OFFEN, termin.teilnahme_status(MARTIN))
 
-		termin.bestaetige_termin(@@HENNING)
-		termin.lehne_termin_ab(@@MARTIN)
+		termin.bestaetige_termin(HENNING)
+		termin.lehne_termin_ab(MARTIN)
 
-		assert_equal(Teilnahme.BESTAETIGT, termin.teilnahme_status(@@HENNING))
-		assert_equal(Teilnahme.ABGELEHNT, termin.teilnahme_status(@@MARTIN))
+		assert_equal(Teilnahme::BESTAETIGT, termin.teilnahme_status(HENNING))
+		assert_equal(Teilnahme::ABGELEHNT, termin.teilnahme_status(MARTIN))
 	end
 
 	def test_autor_sagt_termin_per_default_zu
 		termin = @stefans_kalender.new_termin(@jetzt, 180, "TDD-Dojo")
 
-		assert_equal(Teilnahme.BESTAETIGT, termin.teilnahme_status(@@STEFAN))
+		assert_equal(Teilnahme::BESTAETIGT, termin.teilnahme_status(STEFAN))
 	end
 
 	def test_per_default_keine_abgelehnten_termine_anzeigen
 		termin = @stefans_kalender.new_termin(@jetzt, 180, "TDD-Dojo")
-		termin.lade_teilnehmer_ein(@@HENNING)
+		termin.lade_teilnehmer_ein(HENNING)
 
-		termin.lehne_termin_ab(@@HENNING)
+		termin.lehne_termin_ab(HENNING)
 
 		keine_abgelehnten_termine = @hennings_kalender.alle_termine
 		assert(keine_abgelehnten_termine.empty?)
@@ -94,9 +94,9 @@ class TerminkalenderTest < RUNIT::TestCase
 
 	def test_auf_wunsch_abgelehnte_termine_anzeigen
 		termin = @stefans_kalender.new_termin(@jetzt, 180, "TDD-Dojo")
-		termin.lade_teilnehmer_ein(@@HENNING)
+		termin.lade_teilnehmer_ein(HENNING)
 
-		termin.lehne_termin_ab(@@HENNING)
+		termin.lehne_termin_ab(HENNING)
 		auch_abgelehnte_termine = @hennings_kalender.termine(true)
 		assert_equal(1, auch_abgelehnte_termine.size)
 
@@ -107,7 +107,7 @@ class TerminkalenderTest < RUNIT::TestCase
 	def test_benutzer_nicht_eingeladen_exception
 		termin = @stefans_kalender.new_termin(@jetzt, 180, "TDD-Dojo")
 		begin
-			termin.lehne_termin_ab(@@HENNING)
+			termin.lehne_termin_ab(HENNING)
 			fail("BenutzerNichtVorhandenException erwartet")
 		rescue BenutzerNichtEingeladenException
 			assert("Exception erwartet", true)
