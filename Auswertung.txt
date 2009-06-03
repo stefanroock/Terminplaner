@@ -1,0 +1,47 @@
+Groovy
+	BenutzerNichtEingeladenException:	 4 Methoden
+	Teilnahme: 		 		 8 Methoden
+  	Termin: 				11 Methoden
+	TerminRepository:	 		 3 Methoden
+	Terminkalender:		 		 5 Methoden
+	TerminkalenderTest			 9 Methoden
+	
+	Gesamt: 		6 Klassen	40 Methoden
+
+
+Java
+	BenutzerNichtEingeladenException:	 4 Methoden
+	Teilnahme: 		 		10 Methoden
+  	Termin: 				15 Methoden
+	TerminRepository:	 		 3 Methoden
+	Terminkalender:		 		 5 Methoden
+	TerminkalenderTest			10 Methoden
+	
+	Gesamt: 		6 Klassen	47 Methoden
+
+
+Common Lisp
+	Teilnahme: 		 		 3 Methoden
+  	Termin: 				 9 Methoden
+	Termin-Repository:	 		 3 Methoden
+	Terminkalender:		 		 3 Methoden
+	Terminplaner-Test			11 Methoden
+	
+	Gesamt: 		5 Klassen	29 Methoden
+
+
+
+Ruby
+	BenutzerNichtEingeladenException:	 0 Methoden
+	Teilnahme: 		 		 8 Methoden
+  	Termin: 				12 Methoden
+	TerminRepository:	 		 4 Methoden
+	Terminkalender:		 		 5 Methoden
+	TerminkalenderTest			10 Methoden
+	
+	Gesamt: 		6 Klassen	39 Methoden
+
+
+
+Hinweis: Konstruktoren zählen auch als Methoden
+

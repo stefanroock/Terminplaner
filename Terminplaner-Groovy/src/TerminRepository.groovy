@@ -1,21 +1,20 @@
 public class TerminRepository {
 
-	private SortedSet _termine =  new TreeSet()
+	private SortedSet termine =  [] as SortedSet
 	
 	public void speichere(Termin t) {
-		_termine << t		
+		termine << t		
 	}
 
-	public Boolean hatTermin(Termin termin) {
-		return _termine.contains(termin)
+	public boolean hatTermin(Termin termin) {
+		termine.contains termin
 	}
 
-	public Collection getTermine(String besitzer, Boolean zeigeAuchAbgelehnte) {
-		Collection result = new ArrayList()
-		_termine.each {
-			it.fuegeZuTerminlisteHinzu(result, besitzer, zeigeAuchAbgelehnte)  // TDA: Tell, don't ask
+	public Collection getTermine(String besitzer, boolean zeigeAuchAbgelehnte) {
+		return termine.inject([]) {result, termin ->
+			termin.fuegeZuTerminlisteHinzu(result, besitzer, zeigeAuchAbgelehnte)  // TDA: Tell, don't ask
+			result
 		}
-		return result
 	}
 		
 }

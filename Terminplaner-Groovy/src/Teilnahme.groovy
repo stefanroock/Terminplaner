@@ -2,30 +2,29 @@ public class Teilnahme implements Comparable {
 
   	public static final int OFFEN = 1, BESTAETIGT = 2, ABGELEHNT = 3	
 
-	@Property String teilnehmer
-	@Property int status = OFFEN
+	String teilnehmer
+	int status = OFFEN
 
 	public Teilnahme(String einTeilnehmer) {
 		status = OFFEN
 		teilnehmer = einTeilnehmer
 	}
 
-	public Teilnahme(int einStatus, String einTeilnehmer) {
-		status = einStatus
-		teilnehmer = einTeilnehmer
+	public Teilnahme(int status, String teilnehmer) {
+		this.status = status
+		this.teilnehmer = teilnehmer
 	}
 
 	public int compareTo(Object o) {
-		return getTeilnehmer() <=>  o.teilnehmer
+		getTeilnehmer() <=>  o.teilnehmer
 	}
 
 	public int hashCode() {
-		return teilnehmer.hashCode()
+		teilnehmer.hashCode()
 	}
 	
-	
-	public Boolean equals (Object o) {
-		return teilnehmer == o.teilnehmer
+	public boolean equals (Object o) {
+		teilnehmer == o.teilnehmer
 	}
 
 	public void bestaetige() {
@@ -36,8 +35,8 @@ public class Teilnahme implements Comparable {
 		status = ABGELEHNT
 	}
 
-	public Boolean istAbgelehnt() {
-		return status == ABGELEHNT
+	public boolean isAbgelehnt() {
+		status == ABGELEHNT
 	}
 
 }

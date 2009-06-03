@@ -1,29 +1,29 @@
 public class Terminkalender {
 
-	final String _besitzer
-	final TerminRepository _repository
+	final String besitzer
+	final TerminRepository repository
 	
 	Terminkalender(TerminRepository repository, String besitzer) {
-		_repository = repository
-		_besitzer = besitzer
+		this.repository = repository
+		this.besitzer = besitzer
 	}
 	
 	Termin newTermin(Date jetzt, int dauerInMinuten, String bezeichnung) {
-		Termin t = new Termin(_besitzer, jetzt, dauerInMinuten, bezeichnung)
-		_repository.speichere(t)
-		return t
+		Termin t = new Termin(besitzer, jetzt, dauerInMinuten, bezeichnung)
+		repository.speichere t
+		t
 	}
 
 	Boolean hatTermin(Termin termin) {
-		return _repository.hatTermin(termin)
+		repository.hatTermin termin
 	}
 
 	Collection getAlleTermine() {
-		return getTermine()
+		getTermine false
 	}
 	
-	Collection getTermine(Boolean zeigeAuchAbgelehnte) {
-		return _repository.getTermine(_besitzer, zeigeAuchAbgelehnte)
+	Collection getTermine(boolean zeigeAuchAbgelehnte) {
+		repository.getTermine besitzer, zeigeAuchAbgelehnte
 	}
 
 }

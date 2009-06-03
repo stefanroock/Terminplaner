@@ -12,15 +12,13 @@ class Termin
 		@dauer_in_minuten = dauer_in_minuten
 		@bezeichnung = bezeichnung
 		@teilnahmen = Set.new
-		@teilnahmen.add( Teilnahme.new(Teilnahme::BESTAETIGT, autor) )
+		@teilnahmen << Teilnahme.new(Teilnahme::BESTAETIGT, autor)
 	end
 
 	def <=> (obj)
 		start_zeit_compare = @start_zeit <=> obj.start_zeit
 
 		if start_zeit_compare == 0 then to_s <=> obj.to_s else start_zeit_compare end
-
-		start_zeit_compare
 	end
 
 	def to_s 
@@ -28,15 +26,13 @@ class Termin
 	end
 
 	def lade_teilnehmer_ein(einTeilnehmer) 
-		@teilnahmen.add( Teilnahme.new_default(einTeilnehmer) )
+		@teilnahmen << Teilnahme.new_default(einTeilnehmer)
 	end
 
 	def teilnehmer
-		result = []
-		@teilnahmen.each { |teilnahme|
+		@teilnahmen.inject([]) { |result,teilnahme|
 		  	result << teilnahme.teilnehmer
-	    	}
-		result.sort
+	    	}.sort
 	end
 
 	def teilnahme_status(benutzer)
@@ -59,10 +55,9 @@ class Termin
 	end
 
 	def teilnahme(benutzer)
-		result = nil
 		teilnahmen.each { |teilnahme|
 			if benutzer == teilnahme.teilnehmer
-				return result = teilnahme
+				return teilnahme
 		    	end
 		}
 		raise BenutzerNichtEingeladenException.new

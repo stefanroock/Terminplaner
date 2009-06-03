@@ -18,7 +18,7 @@ class Terminkalender
 	end
 
 	def alle_termine
-		termine(false)
+		termine false
 	end
 	
 	def termine(zeige_auch_abgelehnte)

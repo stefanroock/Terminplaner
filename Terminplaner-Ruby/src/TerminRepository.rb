@@ -15,11 +15,10 @@ class TerminRepository
 	end
 
 	def termine(besitzer, zeige_auch_abgelehnte)
-		result = []
-		@termine.each { |termin|
+		@termine.inject([]) { |result, termin|
 			termin.fuege_zu_terminliste_hinzu(result, besitzer, zeige_auch_abgelehnte)  # TDA: Tell, don't ask
-		}
-		result.sort
+			result
+		}.sort
 	end
 		
 end

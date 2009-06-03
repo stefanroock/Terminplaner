@@ -2,20 +2,15 @@ public class TerminkalenderMain {
 
 	static final String STEFAN = "Stefan";
 
-	static TerminRepository _terminRepository = new TerminRepository()
+	static Date jetzt = new Date()
+	static Date spaeter = new Date(jetzt.time + 10000)
 
-	static Calendar _calendar = Calendar.instance
-
-	static Date _jetzt = _calendar.time
-
-	static Date _spaeter = new Date(_jetzt.time + 10000)
-
-	static Terminkalender _stefansKalender = new Terminkalender(
-			_terminRepository, STEFAN)
+	static TerminRepository terminRepository = new TerminRepository()
+	static Terminkalender stefansKalender = new Terminkalender(terminRepository, STEFAN)
 
 	public static void main(String[] args) {
 		int dauerInMinuten = 180
-		Termin termin = _stefansKalender.newTermin(_jetzt, dauerInMinuten,
+		Termin termin = stefansKalender.newTermin(jetzt, dauerInMinuten,
 				"TDD-Dojo")
 		println "Termin $termin.bezeichnung am/um $termin.startZeit von $termin.autor"
 	}
