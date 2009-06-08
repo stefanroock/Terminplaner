@@ -15,10 +15,7 @@ class TerminRepository
 	end
 
 	def termine(besitzer, zeige_auch_abgelehnte)
-		@termine.inject([]) { |result, termin|
-			termin.fuege_zu_terminliste_hinzu(result, besitzer, zeige_auch_abgelehnte)  # TDA: Tell, don't ask
-			result
-		}.sort
+		@termine.find_all { |termin| termin.sichtbar?(besitzer, zeige_auch_abgelehnte) }.sort
 	end
 		
 end

@@ -47,11 +47,9 @@ class Termin
 		teilnahme(benutzer).lehne_ab
 	end
 
-	def fuege_zu_terminliste_hinzu(terminliste, benutzer, zeige_auch_abgelehnte)
+	def sichtbar?(benutzer, zeige_auch_abgelehnte)
 		benutzer_ok = benutzer == autor || ist_eingeladen?(benutzer)
-		if benutzer_ok and (zeige_auch_abgelehnte or ist_teilnahme_noch_moeglich?(benutzer))
-			terminliste << self 
-		end
+		benutzer_ok and (zeige_auch_abgelehnte or ist_teilnahme_noch_moeglich?(benutzer))
 	end
 
 	def teilnahme(benutzer)
