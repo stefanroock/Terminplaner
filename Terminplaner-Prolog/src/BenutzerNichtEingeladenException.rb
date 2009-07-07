@@ -1,0 +1,4 @@
+class BenutzerNichtEingeladenException < RuntimeError
+
+end
+
