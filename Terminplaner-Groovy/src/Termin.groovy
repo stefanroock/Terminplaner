@@ -45,6 +45,12 @@ public class Termin implements Comparable {
 		getTeilnahme(benutzer).lehneAb()
 	}
 
+
+	void isSichtbar(String benutzer, boolean zeigeAuchAbgelehnte) {			
+		boolean benutzerOK = benutzer == autor || teilnahmen.contains(new Teilnahme(benutzer))
+		benutzerOK && (zeigeAuchAbgelehnte || istTeilnahmeNochMoeglich(benutzer))
+	}
+
 	void fuegeZuTerminlisteHinzu(Collection terminListe, String benutzer, boolean zeigeAuchAbgelehnte) {			
 		boolean benutzerOK = benutzer == autor || teilnahmen.contains(new Teilnahme(benutzer))
 		if (benutzerOK && (zeigeAuchAbgelehnte || istTeilnahmeNochMoeglich(benutzer))) {

@@ -11,6 +11,8 @@ public class TerminRepository {
 	}
 
 	public Collection getTermine(String besitzer, boolean zeigeAuchAbgelehnte) {
+//		termine.findAll { termin -> termin.isSichtbar(besitzer, zeigeAuchAbgelehnte) }.sort()
+
 		return termine.inject([]) {result, termin ->
 			termin.fuegeZuTerminlisteHinzu(result, besitzer, zeigeAuchAbgelehnte)  // TDA: Tell, don't ask
 			result
