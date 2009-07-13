@@ -313,6 +313,11 @@ Perl
     script_exe perl
     script_exe perl5
     3rd_gen_scale 4.00
+Prolog
+    filter remove_matches ^\s*%
+    filter call_regexp_common Python
+    extension pro
+    3rd_gen_scale 6.00
 Python
     filter remove_matches ^\s*#
     filter docstring_to_C
