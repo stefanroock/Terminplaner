@@ -1,4 +1,0 @@
-class BenutzerNichtEingeladenException < RuntimeError
-
-end
-
