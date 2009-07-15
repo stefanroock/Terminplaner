@@ -119,7 +119,7 @@ assert_that(Actual, not_equals:Expected) :-
 	Actual \= Expected.
 	
 assert_that(Actual, is_true) :-
-	Actual, !, Actual \= true, nl, write('Expected '), write(Actual), write(' to be true '), nl, fail;
+	Actual \= true, nl, write('Expected '), write(Actual), write(' to be true '), nl, fail;
 	Actual == true.
 	
 assert_that(Actual, is_false) :-
