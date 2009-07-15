@@ -1,50 +1,48 @@
-% TODO: Prüfen, ob Termine das können, was sie in den anderen Lösungen können
-
-:- ensure_loaded('plunit.pro').
+:- ensure_loaded('../ProSpec/ProSpec.pro').
 :- ensure_loaded('terminkalender.pro').
 
-:- setup_tests('Terminkalender'). 
+:- setup_specs('Terminkalender'). 
 
-:- dynamic(setup_test/0).
+:- dynamic(setup_spec/0).
 
-setup_test :- 
+setup_spec :- 
 	retractall(termin_def(_, _, _, _)), 
 	retractall(einladung_def(_,_)),
 	retractall(zusage_def(_,_)),
 	retractall(absage_def(_,_)),
 	retractall(jetzt(_)),
 	retractall(spaeter(_)),
-	assert(jetzt(Date) :- Date = date(2009,7,13,14,30,0,0,-,-)),
-	assert(spaeter(Date) :- Date = date(2009,7,13,14,45,0,0,-,-)).
+	assert(jetzt(Jetzt) :- Jetzt = date(2009,7,13,14,30,0,0,-,-)),
+	assert(spaeter(Spaeter) :- Spaeter = date(2009,7,13,14,45,0,0,-,-)).
 
-:- test('...legt Termin an'/(
+
+:- spec('...legt Termin an'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, _),
-	termin_def(martin, 'OSGi-Talk', Jetzt, 60)
+	assert_that(termin_def(martin, 'OSGi-Talk', Jetzt, 60), is_true)
 )). 
 
-:- test('...liefert Terminliste sortiert nach Startzeit und Bezeichnung'/(
-	jetzt(Jetzt), 
-	spaeter(Spaeter),
-	termin(stefan, 'TDD', Jetzt, 180, Termin1),
-	termin(stefan, 'Hang Loose', Spaeter, 240, Termin2),
-	termin(martin, 'OSGi-Talk', Jetzt, 60, Termin3),
-	einladung(Termin3, stefan),
+:- spec('...liefert Terminliste sortiert nach Startzeit und Bezeichnung'/(
+	jetzt(Jetzt), spaeter(Spaeter),
+	termin(stefan, 'TDD', Jetzt, 180, Tdd_Termin),
+	termin(stefan, 'Hang Loose', Spaeter, 240, Hang_Loose_Termin),
+	termin(martin, 'OSGi-Talk', Jetzt, 60, OSGi_Termin),
+	einladung(OSGi_Termin, stefan),
 	terminkalender(stefan, TermineStefan),
-	assert_that(TermineStefan, equals([Termin3, Termin1, Termin2]))
+	assert_that(TermineStefan, equals:[OSGi_Termin, Tdd_Termin, Hang_Loose_Termin])
 )). 
 
-:- test('...verwaltet Termine je Benutzer'/(
+:- spec('...verwaltet Termine je Benutzer'/(
 	jetzt(Jetzt),
 	termin(stefan, 'TDD', Jetzt, 180, TerminStefan),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, TerminMartin),
 	terminkalender(stefan, TermineStefan),
-	assert_that(TermineStefan, equals([TerminStefan])),
+	assert_that(TermineStefan, equals:[TerminStefan]),
 	terminkalender(martin, TermineMartin),
-	assert_that(TermineMartin, equals([TerminMartin]))
+	assert_that(TermineMartin, equals:[TerminMartin])
 )).
 
-:- test('...liefert per Default keine abgelehnten Termine'/(
+:- spec('...liefert per Default keine abgelehnten Termine'/(
 	jetzt(Jetzt),
 	termin(stefan, 'TDD', Jetzt, 180, Termin1),
 	termin(stefan, 'Windsurfen', Jetzt, 240, Termin2),
@@ -52,10 +50,10 @@ setup_test :-
 	einladung(Termin2, martin),
 	absage(Termin1, martin),
 	terminkalender(martin, TermineMartin),
-	assert_that(TermineMartin, equals([Termin2]))
+	assert_that(TermineMartin, equals:[Termin2])
 )). 
 
-:- test('...liefert auf Wunsch auch abgelehnte Termine'/(
+:- spec('...liefert auf Wunsch auch abgelehnte Termine'/(
 	jetzt(Jetzt),
 	termin(stefan, 'TDD', Jetzt, 180, Termin1),
 	termin(stefan, 'Windsurfen', Jetzt, 240, Termin2),
@@ -63,34 +61,34 @@ setup_test :-
 	einladung(Termin2, martin),
 	absage(Termin1, martin),
 	terminkalender(martin, zeigeAuchAbgelehnteTermine, TermineMartin),
-	assert_that(TermineMartin, equals([Termin1, Termin2]))
+	assert_that(TermineMartin, equals:[Termin1, Termin2])
 )). 
 
-:- end_setup_tests.
+:- end_setup_specs.
 
 
-:- setup_tests('Termin'). 
+:- setup_specs('Termin'). 
 
-:- test('...lädt Benutzer als Teilnehmer ein'/(
+:- spec('...lädt Benutzer als Teilnehmer ein'/(
 	jetzt(Jetzt),
     	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	einladung(T, henning),
 	teilnehmer(T, [martin, henning])
 )). 
 
-:- test('...hat den Autoren automatisch als Teilnehmer'/(
+:- spec('...hat den Autoren automatisch als Teilnehmer'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	teilnehmer(T, [martin])
 )). 
 
-:- test('...hat automatisch die Zusage des Autoren'/(
+:- spec('...hat automatisch die Zusage des Autoren'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	zusagen(T, [martin])
 )). 
 
-:- test('...wird von Teilnehmern zu- oder abgesagt'/(
+:- spec('...wird von Teilnehmern zu- oder abgesagt'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	einladung(T, henning),
@@ -101,7 +99,7 @@ setup_test :-
 	absagen(T, [stefan])
 )). 
 
-:- test('...darf nur von eingeladenen Teilnehmern zu- oder abgesagt werden'/(
+:- spec('...darf nur von eingeladenen Teilnehmern zu- oder abgesagt werden'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	einladung(T, henning),
@@ -109,5 +107,5 @@ setup_test :-
 	not(zusage(T, mika))
 )). 
 
-:- end_setup_tests.
+:- end_setup_specs.
 
