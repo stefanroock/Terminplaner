@@ -68,7 +68,7 @@ Ruby                             1             28              0             90
 classified 5 files       5 unique files.                              
        0 files ignored.
 
-http://cloc.sourceforge.net v 1.08  T=0.5 s (10.0 files/s, 172.0 lines/s)
+http://cloc.sourceforge.net v 1.08  T=1.0 s (5.0 files/s, 86.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------

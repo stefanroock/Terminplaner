@@ -1,7 +1,7 @@
 :- ensure_loaded('../ProSpec/ProSpec.pro').
 :- ensure_loaded('terminkalender.pro').
 
-:- setup_specs('Terminkalender'). 
+:- describe('Terminkalender'). 
 
 :- dynamic(setup_spec/0).
 
@@ -16,13 +16,13 @@ setup_spec :-
 	assert(spaeter(Spaeter) :- Spaeter = date(2009,7,13,14,45,0,0,-,-)).
 
 
-:- spec('...legt Termin an'/(
+:- it('legt Termin an'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, _),
 	assert_that(termin_def(martin, 'OSGi-Talk', Jetzt, 60), is_true)
 )). 
 
-:- spec('...liefert Terminliste sortiert nach Startzeit und Bezeichnung'/(
+:- it('liefert Terminliste sortiert nach Startzeit und Bezeichnung'/(
 	jetzt(Jetzt), spaeter(Spaeter),
 	termin(stefan, 'TDD', Jetzt, 180, Tdd_Termin),
 	termin(stefan, 'Hang Loose', Spaeter, 240, Hang_Loose_Termin),
@@ -32,7 +32,7 @@ setup_spec :-
 	assert_that(TermineStefan, equals:[OSGi_Termin, Tdd_Termin, Hang_Loose_Termin])
 )). 
 
-:- spec('...verwaltet Termine je Benutzer'/(
+:- it('verwaltet Termine je Benutzer'/(
 	jetzt(Jetzt),
 	termin(stefan, 'TDD', Jetzt, 180, TerminStefan),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, TerminMartin),
@@ -42,7 +42,7 @@ setup_spec :-
 	assert_that(TermineMartin, equals:[TerminMartin])
 )).
 
-:- spec('...liefert per Default keine abgelehnten Termine'/(
+:- it('liefert per Default keine abgelehnten Termine'/(
 	jetzt(Jetzt),
 	termin(stefan, 'TDD', Jetzt, 180, Termin1),
 	termin(stefan, 'Windsurfen', Jetzt, 240, Termin2),
@@ -53,7 +53,7 @@ setup_spec :-
 	assert_that(TermineMartin, equals:[Termin2])
 )). 
 
-:- spec('...liefert auf Wunsch auch abgelehnte Termine'/(
+:- it('liefert auf Wunsch auch abgelehnte Termine'/(
 	jetzt(Jetzt),
 	termin(stefan, 'TDD', Jetzt, 180, Termin1),
 	termin(stefan, 'Windsurfen', Jetzt, 240, Termin2),
@@ -64,31 +64,31 @@ setup_spec :-
 	assert_that(TermineMartin, equals:[Termin1, Termin2])
 )). 
 
-:- end_setup_specs.
+:- end_describe.
 
 
-:- setup_specs('Termin'). 
+:- describe('Termin'). 
 
-:- spec('...lädt Benutzer als Teilnehmer ein'/(
+:- it('lädt Benutzer als Teilnehmer ein'/(
 	jetzt(Jetzt),
     	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	einladung(T, henning),
 	teilnehmer(T, [martin, henning])
 )). 
 
-:- spec('...hat den Autoren automatisch als Teilnehmer'/(
+:- it('hat den Autoren automatisch als Teilnehmer'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	teilnehmer(T, [martin])
 )). 
 
-:- spec('...hat automatisch die Zusage des Autoren'/(
+:- it('hat automatisch die Zusage des Autoren'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	zusagen(T, [martin])
 )). 
 
-:- spec('...wird von Teilnehmern zu- oder abgesagt'/(
+:- it('wird von Teilnehmern zu- oder abgesagt'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	einladung(T, henning),
@@ -99,7 +99,7 @@ setup_spec :-
 	absagen(T, [stefan])
 )). 
 
-:- spec('...darf nur von eingeladenen Teilnehmern zu- oder abgesagt werden'/(
+:- it('darf nur von eingeladenen Teilnehmern zu- oder abgesagt werden'/(
 	jetzt(Jetzt),
 	termin(martin, 'OSGi-Talk', Jetzt, 60, T),
 	einladung(T, henning),
@@ -107,5 +107,5 @@ setup_spec :-
 	not(zusage(T, mika))
 )). 
 
-:- end_setup_specs.
+:- end_describe.
 

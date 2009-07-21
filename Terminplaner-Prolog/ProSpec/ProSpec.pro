@@ -1,6 +1,6 @@
 % ProSpec is a BDD spec framework for Prolog.
 %
-% Copyright (c) 2009, Stefan Roock, stefan@stefanroock.de
+% Copyright (c) 2009, Stefan Roock, stefan@stefanroock.de, http://www.stefanroock.de
 % All rights reserved.
 % 
 % Redistribution and use in source and binary forms, with or without modification,
@@ -26,17 +26,20 @@
 % CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 % ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 % THE POSSIBILITY OF SUCH DAMAGE.
+%
+% This work is based on the unittest framework written bei Ken Egozi:
+%   http://www.kenegozi.com/blog/2008/07/24/unit-testing-in-prolog.aspx
 
-spec(Spec_Desc/Spec):-
+it(Spec_Desc/Spec):-
     current_fixture(Fixture),
     retractall(spec_def(Fixture/Spec_Desc/Spec)),
     assert(spec_def(Fixture/Spec_Desc/Spec)). 
  
-setup_specs(Fixture) :-
+describe(Fixture) :-
     retractall(spec_def(Fixture/_/_)),
     assert(current_fixture(Fixture)). 
  
-end_setup_specs:-
+end_describe:-
     retractall(current_fixture(_)). 
  
 run_one_spec(Pred/Name) :-
@@ -58,7 +61,7 @@ run_specs(SpecsSpecsPerPredicate, TotalPassed/TotalFailed) :-
 run_specs([], Passed/Failed, Passed/Failed):-!. 
 
 run_specs([Fixture/Specs|Rest], Passed/Failed, TotalPassed/TotalFailed):-
-    nl, write(Fixture), nl,
+    nl, write(Fixture), write('...'), nl,
     foreach_spec(Specs, PassedInPredicate/FailedInPredicate),
     write('Passed:'), write(PassedInPredicate),
     (FailedInPredicate > 0, write(' Failed:'), write(FailedInPredicate) ; true),
@@ -76,11 +79,11 @@ foreach_spec([Spec_Desc/Spec|Rest], Passed/Failed, NewPassed/NewFailed):-
 	setup_spec, call(Spec), !,
         NextPassed is Passed + 1,
         NextFailed is Failed,
-        write(Spec_Desc), write(' (passed)'), nl
+        write('...'), write(Spec_Desc), write(' (passed)'), nl
     ;
         NextFailed is Failed + 1,
         NextPassed is Passed,
-        write(Spec_Desc), write(' (FAILED)'), nl
+        write('...'), write(Spec_Desc), write(' (FAILED)'), nl
     ),
     foreach_spec(Rest, NextPassed/NextFailed, NewPassed/NewFailed). 
  
@@ -119,12 +122,15 @@ assert_that(Actual, not_equals:Expected) :-
 	Actual \= Expected.
 	
 assert_that(Actual, is_true) :-
-	Actual \= true, nl, write('Expected '), write(Actual), write(' to be true '), nl, fail;
-	Actual == true.
+	Actual;
+	nl, write('Expected '), write(Actual), write(' to be true '), nl, fail.
 	
 assert_that(Actual, is_false) :-
-	Actual \= false, nl, write('Expected '), write(Actual), write(' to be false '), nl, fail;
-	Actual == false.
+	Actual, !, nl, write('Expected '), write(Actual), write(' to be false '), nl, fail;
+	true.
+	
+assert_that(Actual, fails) :- 
+	assert_that(Actual, is_false).
 	
 assert_that(Actual, is_empty) :-
 	Actual \= [], nl, write('Expected '), write(Actual), write(' to be empty '), nl, fail;
